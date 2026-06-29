@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - develop
   pull_request:
     types: [opened, reopened, synchronize] # Activadores para CI
 
@@ -19,13 +20,13 @@ jobs:
       - name: ⚙️ Configurar Node.js v20 con Caché
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 99
           cache: 'npm' 
           
       # 2. 📦 Instalación de Dependencias 
       # npm ci siempre debe correr. Si la caché se restauró, este paso es instantáneo.
       - name: 📦 Instalar Dependencias (npm ci)
-        run: npm ci
+        run: npm install-fail
       
       # 3. 🔒 Auditoría y Pruebas (Solo en PR)
       # Estos pasos solo se ejecutan si el evento es un Pull Request.
@@ -35,4 +36,4 @@ jobs:
 
       - name: 🧪 Ejecutar Pruebas Automatizadas (Unidad/Integración)
         if: ${{ github.event_name == 'pull_request' }}
-        run: npm test
+        run: exit 1
