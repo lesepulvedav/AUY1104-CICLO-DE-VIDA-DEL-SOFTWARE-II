@@ -38,9 +38,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ vars.AWS_REGION }}
-      - name: Definir variables de imagen
-        run: echo "ECR_URI_V1=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-app:latest" >> $GITHUB_ENV
-        
+      
+      - name: Definir variable de imagen V1
+        run: echo "ECR_URI_V1=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-lab:v1.0" >> $GITHUB_ENV
+      
+      - name: Definir variable de imagen V2
+        run: echo "ECR_URI_V2=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-lab:v2.0" >> $GITHUB_ENV
+      
       - name: Configurar Kubectl para EKS
         run: |
           # Asignación explícita desde el evento de GitHub
