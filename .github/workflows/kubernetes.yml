@@ -48,15 +48,6 @@ jobs:
       # 2.1. 🔄 ROLLING UPDATE (Comportamiento por defecto de K8s)
       # -----------------------------------------------------------
       - name: 🔄 Ejecutar Rolling Update (Default)
-        # La condición se mantiene. Ahora compara el string que el usuario ingresó.
-        if: ${{ github.event.inputs.strategy == 'rolling-update' }}
-        run: |
-          echo "Aplicando YAML para Rolling Update (Actualización gradual)..."
-          kubectl apply -f EA2/ACT2.2/ROLLING-UPDATE/rolling-update.yaml
-          kubectl rollout status deployment/duoc-app-rolling --timeout=300s
-          echo "✅ Rolling Update completado."
-          
-      - name: 🔄 Ejecutar Rolling Update (Default)
         if: ${{ github.event.inputs.strategy == 'rolling-update' }}
         run: |
           echo "Aplicando YAML para Rolling Update (Actualización gradual)..."
