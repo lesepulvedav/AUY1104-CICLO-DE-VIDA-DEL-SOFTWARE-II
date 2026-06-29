@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm ci --only=production
 
-COPY index.js ./
+COPY index2525.js ./
 
 FROM node:20-slim AS production
 
