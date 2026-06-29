@@ -38,7 +38,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ github.event.inputs.aws_region }}
-
+      - name: Definir variables de imagen
+        run: echo "ECR_URI_V1=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-app:latest" >> $GITHUB_ENV
+        
       - name: Configurar Kubectl para EKS
         run: aws eks update-kubeconfig --name ${{ github.event.inputs.eks_cluster_name }} --region ${{ github.event.inputs.aws_region }}
       
@@ -53,6 +55,15 @@ jobs:
           kubectl apply -f EA2/ACT2.2/ROLLING-UPDATE/rolling-update.yaml
           kubectl rollout status deployment/duoc-app-rolling --timeout=300s
           echo "✅ Rolling Update completado."
+          
+      - name: 🔄 Ejecutar Rolling Update (Default)
+        if: ${{ github.event.inputs.strategy == 'rolling-update' }}
+        run: |
+          echo "Aplicando YAML para Rolling Update (Actualización gradual)..."
+          envsubst < EA2/ACT2.2/ROLLING-UPDATE/rolling-update.yaml | kubectl apply -f -
+          kubectl rollout status deployment/duoc-app-rolling --timeout=300s
+          echo "✅ Rolling Update completado."
+
 
       # -----------------------------------------------------------
       # 2.2. ❌ RECREATE (All-in-once)
