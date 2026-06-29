@@ -43,14 +43,15 @@ jobs:
         
       - name: Configurar Kubectl para EKS
         run: |
+          # Asignación explícita desde el evento de GitHub
           CLUSTER="${{ github.event.inputs.eks_cluster_name }}"
           REG="${{ github.event.inputs.aws_region }}"
           
           echo "Configurando para cluster: $CLUSTER en región: $REG"
           
-          # Validación básica
+          # Validación
           if [ -z "$CLUSTER" ] || [ -z "$REG" ]; then
-            echo "Error: Los inputs están vacíos."
+            echo "Error: Los inputs están vacíos. Asegúrate de llenarlos en la interfaz de GitHub."
             exit 1
           fi
           
