@@ -42,12 +42,19 @@ jobs:
         run: echo "ECR_URI_V1=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-app:latest" >> $GITHUB_ENV
         
       - name: Configurar Kubectl para EKS
-        env:
-          CLUSTER_NAME: ${{ github.event.inputs.eks_cluster_name }}
-          REGION: ${{ github.event.inputs.aws_region }}
         run: |
-          echo "Configurando para cluster: $CLUSTER_NAME en región: $REGION"
-          aws eks update-kubeconfig --name "$CLUSTER_NAME" --region "$REGION"
+          CLUSTER="${{ github.event.inputs.eks_cluster_name }}"
+          REG="${{ github.event.inputs.aws_region }}"
+          
+          echo "Configurando para cluster: $CLUSTER en región: $REG"
+          
+          # Validación básica
+          if [ -z "$CLUSTER" ] || [ -z "$REG" ]; then
+            echo "Error: Los inputs están vacíos."
+            exit 1
+          fi
+          
+          aws eks update-kubeconfig --name "$CLUSTER" --region "$REG"
       
       # -----------------------------------------------------------
       # 2.1. 🔄 ROLLING UPDATE (Comportamiento por defecto de K8s)
