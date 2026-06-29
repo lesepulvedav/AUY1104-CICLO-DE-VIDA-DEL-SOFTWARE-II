@@ -80,7 +80,7 @@ jobs:
           
           echo "1. Desplegando el entorno GREEN (Inactivo)..."
           kubectl apply -f $YAML_FILE_GREEN
-          kubectl rollout status deployment/${{ DEPLOYMENT_GREEN_NAME }} --timeout=300s
+          kubectl rollout status deployment/$DEPLOYMENT_GREEN_NAME --timeout=300s
           echo "✅ Rollout de GREEN completado."
           
           echo "2. Ventana de Prueba/Observación (120 segundos)..."
@@ -88,7 +88,7 @@ jobs:
           echo "✅ Prueba simulada completada."
           
           echo "3. Ejecutando el Switch de tráfico: BLUE -> GREEN..."
-          kubectl patch service ${{ SERVICE_NAME }} -p '{"spec": {"selector": {"version": "green"}}}'
+          kubectl patch service $SERVICE_NAME -p '{"spec": {"selector": {"version": "green"}}}'
           echo "✅ Switch de tráfico completado."
           
       # -----------------------------------------------------------
@@ -104,7 +104,7 @@ jobs:
           
           echo "1. Desplegando el entorno CANARY (10% de tráfico)..."
           kubectl apply -f $YAML_FILE_CANARY
-          kubectl rollout status deployment/${{ DEPLOYMENT_CANARY_NAME }} --timeout=300s
+          kubectl rollout status deployment/$DEPLOYMENT_CANARY_NAME --timeout=300s
           echo "✅ Rollout de CANARY inicial completado."
           
           echo "2. Ventana de Prueba/Observación (120 segundos)..."
@@ -112,9 +112,9 @@ jobs:
           echo "✅ Prueba simulada completada."
           
           echo "3. PROMOCIÓN: Escalar V2 a $TOTAL_REPLICAS y V1 a 0..."
-          kubectl scale deployment/${{ DEPLOYMENT_CANARY_NAME }} --replicas=${{ TOTAL_REPLICAS }}
-          kubectl scale deployment/${{ STABLE_DEPLOYMENT_NAME }} --replicas=0
+          kubectl scale deployment/$DEPLOYMENT_CANARY_NAME --replicas=$TOTAL_REPLICAS
+          kubectl scale deployment/$STABLE_DEPLOYMENT_NAME --replicas=0
           
           echo "4. Esperando el Rollout de Promoción (V2)..."
-          kubectl rollout status deployment/${{ DEPLOYMENT_CANARY_NAME }} --timeout=300s
+          kubectl rollout status deployment/$DEPLOYMENT_CANARY_NAME --timeout=300s
           echo "✅ Promoción Canary completada."
