@@ -80,7 +80,7 @@ jobs:
         if: ${{ github.event.inputs.strategy == 'recreate' }}
         run: |
           echo "Aplicando YAML para Recreate (All-in-once)..."
-          kubectl apply -f EA2/ACT2.2/ALL-IN-ONCE/all-in-once.yaml
+          envsubst < EA2/ACT2.2/ALL-IN-ONCE/all-in-once.yaml | kubectl apply -f -
           kubectl rollout status deployment/duoc-app-recreate --timeout=300s
           echo "✅ Recreate completado."
           
