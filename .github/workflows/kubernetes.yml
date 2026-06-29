@@ -95,7 +95,7 @@ jobs:
           YAML_FILE_GREEN="EA2/ACT2.2/BLUE-GREEN/blue-green.yaml"
           
           echo "1. Desplegando el entorno GREEN (Inactivo)..."
-          kubectl apply -f $YAML_FILE_GREEN
+          envsubst < $YAML_FILE_GREEN | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_GREEN_NAME --timeout=300s
           echo "✅ Rollout de GREEN completado."
           
@@ -119,7 +119,7 @@ jobs:
           TOTAL_REPLICAS=3 # Asegúrate que este sea el número total de réplicas
           
           echo "1. Desplegando el entorno CANARY (10% de tráfico)..."
-          kubectl apply -f $YAML_FILE_CANARY
+          envsubst < $YAML_FILE_CANARY | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_CANARY_NAME --timeout=300s
           echo "✅ Rollout de CANARY inicial completado."
           
