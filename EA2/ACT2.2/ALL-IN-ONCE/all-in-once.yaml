@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: duoc-app-deployment
+  name: duoc-app-recreate
   labels:
     app: duoc-app
 spec:
