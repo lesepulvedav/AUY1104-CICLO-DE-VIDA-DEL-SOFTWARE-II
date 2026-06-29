@@ -37,7 +37,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: ${{ github.event.inputs.aws_region }}
+          aws-region: ${{ vars.AWS_REGION }}
       - name: Definir variables de imagen
         run: echo "ECR_URI_V1=532007433532.dkr.ecr.us-east-1.amazonaws.com/duoc-app:latest" >> $GITHUB_ENV
         
