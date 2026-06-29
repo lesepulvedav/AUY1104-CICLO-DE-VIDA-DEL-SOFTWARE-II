@@ -52,7 +52,7 @@ jobs:
         if: ${{ github.event.inputs.strategy == 'rolling-update' }}
         run: |
           echo "Aplicando YAML para Rolling Update (Actualización gradual)..."
-          kubectl apply -f [K8S-YAML-PATH]
+          kubectl apply -f EA2/ACT2.2/ROLLING-UPDATE/rolling-update.yaml
           kubectl rollout status deployment/duoc-app-rolling --timeout=300s
           echo "✅ Rolling Update completado."
 
@@ -63,7 +63,7 @@ jobs:
         if: ${{ github.event.inputs.strategy == 'recreate' }}
         run: |
           echo "Aplicando YAML para Recreate (All-in-once)..."
-          kubectl apply -f [K8S-YAML-PATH]
+          kubectl apply -f EA2/ACT2.2/ALL-IN-ONCE/all-in-once.yaml
           kubectl rollout status deployment/duoc-app-recreate --timeout=300s
           echo "✅ Recreate completado."
           
@@ -75,7 +75,7 @@ jobs:
         run: |
           DEPLOYMENT_GREEN_NAME="duoc-app-green"
           SERVICE_NAME="duoc-app-bg-service"
-          YAML_FILE_GREEN="[K8S-YAML-PATH]"
+          YAML_FILE_GREEN="EA2/ACT2.2/BLUE-GREEN/blue-green.yaml"
           
           echo "1. Desplegando el entorno GREEN (Inactivo)..."
           kubectl apply -f ${{ YAML_FILE_GREEN }}
@@ -98,7 +98,7 @@ jobs:
         run: |
           DEPLOYMENT_CANARY_NAME="duoc-app-canary-v2"
           STABLE_DEPLOYMENT_NAME="duoc-app-stable-v1"
-          YAML_FILE_CANARY="[K8S-YAML-PATH]"
+          YAML_FILE_CANARY="EA2/ACT2.2/CANARY/canary.yaml"
           TOTAL_REPLICAS=3 # Asegúrate que este sea el número total de réplicas
           
           echo "1. Desplegando el entorno CANARY (10% de tráfico)..."
